@@ -21,8 +21,7 @@ foreach ($i in $e)
 {
   $alias = $i.Alias
   if ($alias -eq "info"){continue}
-  try {$get_total_item_size = obj_to_int64 -parameterobject ((get-mailboxstatistics $alias).TotalItemSize.value)}
-  catch {continue}
+  $get_total_item_size = obj_to_int64 -parameterobject ((get-mailboxstatistics $alias).TotalItemSize.value)
   $ProhibitSendQuota = $null
   if ($i.ProhibitSendQuota -eq "Unlimited"){$ProhibitSendQuota = (get-mailboxstatistics $alias).DatabaseProhibitSendQuota.value} else {$ProhibitSendQuota = $i.ProhibitSendQuota}
   $ProhibitSendQuota = obj_to_int64 -parameterobject $ProhibitSendQuota
@@ -31,24 +30,3 @@ foreach ($i in $e)
 }
 
 
-
-
-
-
-
-
-
-
-trap [DivideByZeroException] {
-  Write-Host 'divide by zero trapped'
-  5/0
-}
-
-$e = @($null,9,1,2)
-foreach ($i in $e) {
-  if ($null -eq $i){continue}
-  90/$i
-}
-
-Write-Output $alias
-if ($null -eq $ParameterObject){$ParameterObject = 0}
